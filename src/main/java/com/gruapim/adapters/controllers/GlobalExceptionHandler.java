@@ -3,6 +3,8 @@ package com.gruapim.adapters.controllers;
 import com.gruapim.adapters.controllers.exceptions.NotFoundException;
 import com.gruapim.application.dto.ErrorResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -18,6 +20,18 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ErrorResponse> handle(IllegalArgumentException exception) {
     ErrorResponse response = new ErrorResponse(exception.getMessage());
+
+    return ResponseEntity.badRequest().body(response);
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ErrorResponse> handles(MethodArgumentNotValidException exception) {
+    ErrorResponse response = new ErrorResponse(exception.getBindingResult()
+                                                   .getFieldErrors()
+                                                   .stream()
+                                                   .map(FieldError::getDefaultMessage)
+                                                   .toList()
+                                                   .get(0));
 
     return ResponseEntity.badRequest().body(response);
   }
