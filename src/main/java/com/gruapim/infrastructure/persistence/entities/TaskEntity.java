@@ -46,6 +46,8 @@ public class TaskEntity implements Task {
   @Embedded
   private Deadline deadline;
 
+  public Boolean done;
+
   @CreatedDate private LocalDateTime createdAt;
 
   @LastModifiedDate private LocalDateTime updatedAt;
@@ -54,11 +56,11 @@ public class TaskEntity implements Task {
 
   public TaskEntity(
       String title, String category, String description, Integer priority, LocalDateTime deadline) {
-    this(null, title, category, description, priority, deadline, null, null);
+    this(null, title, category, description, priority, deadline, false, null, null);
   }
 
   public TaskEntity(Long id, String title, String category, String description, Integer priority,
-      LocalDateTime deadline, LocalDateTime createdAt, LocalDateTime updatedAt) {
+      LocalDateTime deadline, Boolean done, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
 
     this.title = new Title(title);
@@ -70,6 +72,8 @@ public class TaskEntity implements Task {
     this.priority = new Priority(priority);
 
     this.deadline = new Deadline(deadline);
+
+    this.done = done;
 
     this.createdAt = createdAt;
 
@@ -104,6 +108,11 @@ public class TaskEntity implements Task {
   @Override
   public Deadline getDeadline() {
     return deadline;
+  }
+
+  @Override
+  public Boolean isDone() {
+    return done;
   }
 
   @Override

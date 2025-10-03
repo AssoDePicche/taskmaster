@@ -17,7 +17,7 @@ public class TaskMapper {
   public TaskResponse map(Task task) {
     return new TaskResponse(task.getId(), task.getTitle().toString(), task.getCategory().toString(),
         task.getDescription().toString(), task.getPriority().toInteger(),
-        task.getDeadline().toLocalDateTime().format(formatter),
+        task.getDeadline().toLocalDateTime().format(formatter), task.isDone(),
         task.getCreatedAt().format(formatter), task.getUpdatedAt().format(formatter));
   }
 }

@@ -15,6 +15,8 @@ public interface Task {
 
   Deadline getDeadline();
 
+  Boolean isDone();
+
   LocalDateTime getCreatedAt();
 
   LocalDateTime getUpdatedAt();
