@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TaskJpaRepository extends JpaRepository<TaskEntity, Long> {
   Page<TaskEntity> findAll(Pageable pageable);
+
+  Page<TaskEntity> findAllByCategory_Value(String category, Pageable pageable);
 }
