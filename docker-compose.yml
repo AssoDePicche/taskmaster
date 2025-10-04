@@ -12,11 +12,8 @@ services:
       - "8080:8080"
   database:
     command: --require_secure_transport=OFF
-    environment:
-      MYSQL_DATABASE: taskmaster
-      MYSQL_USER: application
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: password
+    env_file:
+      - .env.production
     healthcheck:
       interval: 10s
       retries: 5
