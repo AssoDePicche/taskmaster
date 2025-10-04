@@ -1,7 +1,7 @@
-package com.gruapim.adapters.controllers;
+package com.gruapim.infrastructure.controllers;
 
-import com.gruapim.adapters.controllers.exceptions.NotFoundException;
 import com.gruapim.application.dto.ErrorResponse;
+import com.gruapim.infrastructure.controllers.exceptions.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

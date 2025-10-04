@@ -1,16 +1,21 @@
-package com.gruapim.adapters.controllers;
+package com.gruapim.infrastructure.controllers;
 
-import com.gruapim.adapters.controllers.exceptions.NotFoundException;
 import com.gruapim.application.dto.TaskPatch;
 import com.gruapim.application.dto.TaskRequest;
 import com.gruapim.application.dto.TaskResponse;
 import com.gruapim.application.services.TaskService;
 import com.gruapim.domain.Category;
+import com.gruapim.infrastructure.controllers.annotations.CategoryQuery;
+import com.gruapim.infrastructure.controllers.annotations.CreateTask;
+import com.gruapim.infrastructure.controllers.annotations.DeleteTask;
+import com.gruapim.infrastructure.controllers.annotations.PartiallyUpdateTask;
+import com.gruapim.infrastructure.controllers.annotations.QueryTaskDetails;
+import com.gruapim.infrastructure.controllers.annotations.QueryTasks;
+import com.gruapim.infrastructure.controllers.annotations.UpdateTask;
+import com.gruapim.infrastructure.controllers.exceptions.NotFoundException;
 import com.gruapim.infrastructure.mappers.TaskMapper;
 import com.gruapim.infrastructure.persistence.entities.TaskEntity;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -48,12 +53,7 @@ public class TaskController {
   }
 
   @DeleteMapping("/{id}")
-  @Operation(description = "Remove permanentemente uma tarefa", summary = "Excluir tarefa",
-      responses =
-      {
-        @ApiResponse(description = "Tarefa excluída com sucesso", responseCode = "204")
-        , @ApiResponse(description = "Tarefa não encontrada", responseCode = "404")
-      })
+  @DeleteTask
   public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
     TaskEntity task = service.query(id).orElseThrow(() -> new NotFoundException());
 
@@ -63,14 +63,9 @@ public class TaskController {
   }
 
   @GetMapping
-  @Operation(
-      description = "Retorna uma lista paginada de todas as tarefas ou filtradas por categoria",
-      summary = "Listar tarefas",
-      responses =
-      { @ApiResponse(description = "Tarefas listadas com sucesso", responseCode = "200") })
-  public ResponseEntity<Page<TaskResponse>>
-  get(@Parameter(description = "Filtra tarefas por categoria (opcional)", name = "categoria",
-          required = false) @RequestParam(name = "categoria", required = false) Category category,
+  @QueryTasks
+  public ResponseEntity<Page<TaskResponse>> get(
+      @CategoryQuery @RequestParam(name = "categoria", required = false) Category category,
       @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
     Page<TaskEntity> entities =
         (null != category) ? service.query(category, pageable) : service.query(pageable);
@@ -81,14 +76,8 @@ public class TaskController {
   }
 
   @GetMapping("/{id}")
-  @Operation(description = "Retorna os detalhes de uma tarefa", summary = "Buscar tarefa por id",
-      responses =
-      {
-        @ApiResponse(description = "Tarefa encontrada com sucesso", responseCode = "200")
-        , @ApiResponse(description = "Tarefa não encontrada", responseCode = "404")
-      })
-  public ResponseEntity<TaskResponse>
-  get(@PathVariable Long id) throws Exception {
+  @QueryTaskDetails
+  public ResponseEntity<TaskResponse> get(@PathVariable Long id) throws Exception {
     TaskEntity entity = service.query(id).orElseThrow(() -> new NotFoundException());
 
     TaskResponse response = mapper.map(entity);
@@ -97,15 +86,9 @@ public class TaskController {
   }
 
   @PatchMapping("/{id}")
-  @Operation(description = "Atualiza parcialmente os detalhes de uma tarefa",
-      summary = "Atualizar parcialmente uma tarefa",
-      responses =
-      {
-        @ApiResponse(description = "Tarefa atualizada com sucesso", responseCode = "200")
-        , @ApiResponse(description = "Tarefa não encontrada", responseCode = "404")
-      })
-  public ResponseEntity<TaskResponse>
-  patch(@PathVariable Long id, @Valid @RequestBody TaskPatch request) throws Exception {
+  @PartiallyUpdateTask
+  public ResponseEntity<TaskResponse> patch(
+      @PathVariable Long id, @Valid @RequestBody TaskPatch request) throws Exception {
     TaskEntity entity = service.query(id).orElseThrow(() -> new NotFoundException());
 
     TaskResponse response = mapper.map(service.update(entity, request));
@@ -114,14 +97,9 @@ public class TaskController {
   }
 
   @PostMapping
-  @Operation(description = "Cria uma tarefa", summary = "Criar tarefa",
-      responses =
-      {
-        @ApiResponse(description = "Tarefa criada com sucesso", responseCode = "201")
-        , @ApiResponse(description = "Dados inválidos", responseCode = "400")
-      })
-  public ResponseEntity<TaskResponse>
-  post(@Valid @RequestBody TaskRequest request) throws Exception {
+  @CreateTask
+  public ResponseEntity<TaskResponse> post(@Valid @RequestBody TaskRequest request)
+      throws Exception {
     TaskEntity entity = mapper.map(request);
 
     TaskResponse response = mapper.map(service.save(entity));
@@ -134,14 +112,9 @@ public class TaskController {
   }
 
   @PutMapping("/{id}")
-  @Operation(description = "Atualiza todos os detalhes de uma tarefa", summary = "Atualizar tarefa",
-      responses =
-      {
-        @ApiResponse(description = "Tarefa atualizada com sucesso", responseCode = "200")
-        , @ApiResponse(description = "Tarefa não encontrada", responseCode = "404")
-      })
-  public ResponseEntity<TaskResponse>
-  put(@PathVariable Long id, @Valid @RequestBody TaskRequest request) throws Exception {
+  @UpdateTask
+  public ResponseEntity<TaskResponse> put(
+      @PathVariable Long id, @Valid @RequestBody TaskRequest request) throws Exception {
     TaskEntity entity = service.query(id).orElseThrow(() -> new NotFoundException());
 
     TaskResponse response = mapper.map(service.update(entity, request));
