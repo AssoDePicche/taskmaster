@@ -1,7 +1,7 @@
 package com.gruapim.infrastructure.controllers;
 
 import com.gruapim.application.dto.ErrorResponse;
-import com.gruapim.infrastructure.controllers.exceptions.NotFoundException;
+import com.gruapim.application.services.exceptions.TaskNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,8 +36,8 @@ public class GlobalExceptionHandler {
     return ResponseEntity.badRequest().body(response);
   }
 
-  @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<Void> handle(NotFoundException exception) {
+  @ExceptionHandler(TaskNotFoundException.class)
+  public ResponseEntity<Void> handle(TaskNotFoundException exception) {
     return ResponseEntity.notFound().build();
   }
 }

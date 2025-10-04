@@ -2,45 +2,19 @@ package com.gruapim.application.services;
 
 import com.gruapim.application.dto.TaskPatch;
 import com.gruapim.application.dto.TaskRequest;
-import com.gruapim.domain.Category;
 import com.gruapim.infrastructure.persistence.entities.TaskEntity;
 import com.gruapim.infrastructure.persistence.repositories.TaskJpaRepository;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class TaskService {
+public class TaskUpdateService {
   private final TaskJpaRepository repository;
 
-  public TaskService(TaskJpaRepository repository) {
+  public TaskUpdateService(TaskJpaRepository repository) {
     this.repository = repository;
-  }
-
-  @Transactional
-  public void delete(Long id) {
-    repository.deleteById(id);
-  }
-
-  public Optional<TaskEntity> query(Long id) {
-    return repository.findById(id);
-  }
-
-  public Page<TaskEntity> query(Pageable pageable) {
-    return repository.findAll(pageable);
-  }
-
-  public Page<TaskEntity> query(Category category, Pageable pageable) {
-    return repository.findAllByCategory_Value(category.toString(), pageable);
-  }
-
-  @Transactional
-  public TaskEntity save(TaskEntity task) {
-    return repository.save(task);
   }
 
   @Transactional
