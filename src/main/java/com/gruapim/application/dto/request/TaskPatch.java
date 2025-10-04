@@ -1,4 +1,4 @@
-package com.gruapim.application.dto;
+package com.gruapim.application.dto.request;
 
 import java.time.LocalDateTime;
 

@@ -1,8 +1,8 @@
 package com.gruapim.infrastructure.controllers;
 
-import com.gruapim.application.dto.TaskPatch;
-import com.gruapim.application.dto.TaskRequest;
-import com.gruapim.application.dto.TaskResponse;
+import com.gruapim.application.dto.request.TaskPatch;
+import com.gruapim.application.dto.request.TaskRequest;
+import com.gruapim.application.dto.response.TaskResponse;
 import com.gruapim.application.services.TaskPersistenceService;
 import com.gruapim.application.services.TaskQueryService;
 import com.gruapim.application.services.TaskUpdateService;

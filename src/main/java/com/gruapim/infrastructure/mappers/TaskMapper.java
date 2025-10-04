@@ -1,7 +1,7 @@
 package com.gruapim.infrastructure.mappers;
 
-import com.gruapim.application.dto.TaskRequest;
-import com.gruapim.application.dto.TaskResponse;
+import com.gruapim.application.dto.request.TaskRequest;
+import com.gruapim.application.dto.response.TaskResponse;
 import com.gruapim.domain.Task;
 import com.gruapim.infrastructure.persistence.entities.TaskEntity;
 import java.time.format.DateTimeFormatter;

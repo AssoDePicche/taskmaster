@@ -1,4 +1,4 @@
-package com.gruapim.application.dto;
+package com.gruapim.application.dto.request;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;

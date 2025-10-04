@@ -1,6 +1,6 @@
 package com.gruapim.infrastructure.controllers;
 
-import com.gruapim.application.dto.ErrorResponse;
+import com.gruapim.application.dto.response.ErrorResponse;
 import com.gruapim.application.services.exceptions.TaskNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

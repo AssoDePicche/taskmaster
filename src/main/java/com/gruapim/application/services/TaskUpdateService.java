@@ -1,7 +1,7 @@
 package com.gruapim.application.services;
 
-import com.gruapim.application.dto.TaskPatch;
-import com.gruapim.application.dto.TaskRequest;
+import com.gruapim.application.dto.request.TaskPatch;
+import com.gruapim.application.dto.request.TaskRequest;
 import com.gruapim.infrastructure.persistence.entities.TaskEntity;
 import com.gruapim.infrastructure.persistence.repositories.TaskJpaRepository;
 import java.time.LocalDateTime;
