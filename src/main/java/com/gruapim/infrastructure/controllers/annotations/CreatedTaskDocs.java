@@ -7,13 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Operation(description = "Atualiza parcialmente os detalhes de uma tarefa",
-    summary = "Atualizar parcialmente uma tarefa",
+@Operation(description = "Cria uma tarefa", summary = "Criar tarefa",
     responses =
     {
-      @ApiResponse(description = "Tarefa atualizada com sucesso", responseCode = "200")
-      , @ApiResponse(description = "Tarefa não encontrada", responseCode = "404")
+      @ApiResponse(description = "Tarefa criada com sucesso", responseCode = "201")
+      , @ApiResponse(description = "Dados inválidos", responseCode = "400")
     })
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface PartiallyUpdateTask {}
+public @interface CreatedTaskDocs {}

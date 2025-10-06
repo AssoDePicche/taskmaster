@@ -7,12 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Operation(description = "Remove permanentemente uma tarefa", summary = "Excluir tarefa",
+@Operation(description = "Atualiza todos os detalhes de uma tarefa", summary = "Atualizar tarefa",
     responses =
     {
-      @ApiResponse(description = "Tarefa excluída com sucesso", responseCode = "204")
+      @ApiResponse(description = "Tarefa atualizada com sucesso", responseCode = "200")
       , @ApiResponse(description = "Tarefa não encontrada", responseCode = "404")
     })
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface DeleteTask {}
+public @interface UpdatedTaskDocs {}

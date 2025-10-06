@@ -7,12 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Operation(description = "Cria uma tarefa", summary = "Criar tarefa",
+@Operation(description = "Remove permanentemente uma tarefa", summary = "Excluir tarefa",
     responses =
     {
-      @ApiResponse(description = "Tarefa criada com sucesso", responseCode = "201")
-      , @ApiResponse(description = "Dados inválidos", responseCode = "400")
+      @ApiResponse(description = "Tarefa excluída com sucesso", responseCode = "204")
+      , @ApiResponse(description = "Tarefa não encontrada", responseCode = "404")
     })
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface CreateTask {}
+public @interface DeletedTaskDocs {}

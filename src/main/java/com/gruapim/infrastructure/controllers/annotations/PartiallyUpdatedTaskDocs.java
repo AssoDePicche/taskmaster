@@ -7,7 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Operation(description = "Atualiza todos os detalhes de uma tarefa", summary = "Atualizar tarefa",
+@Operation(description = "Atualiza parcialmente os detalhes de uma tarefa",
+    summary = "Atualizar parcialmente uma tarefa",
     responses =
     {
       @ApiResponse(description = "Tarefa atualizada com sucesso", responseCode = "200")
@@ -15,4 +16,4 @@ import java.lang.annotation.Target;
     })
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface UpdateTask {}
+public @interface PartiallyUpdatedTaskDocs {}

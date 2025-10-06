@@ -5,13 +5,13 @@ import com.gruapim.application.dto.request.TaskRequest;
 import com.gruapim.application.dto.response.TaskResponse;
 import com.gruapim.application.services.TaskService;
 import com.gruapim.domain.Category;
-import com.gruapim.infrastructure.controllers.annotations.CategoryQuery;
-import com.gruapim.infrastructure.controllers.annotations.CreateTask;
-import com.gruapim.infrastructure.controllers.annotations.DeleteTask;
-import com.gruapim.infrastructure.controllers.annotations.PartiallyUpdateTask;
-import com.gruapim.infrastructure.controllers.annotations.QueryTaskDetails;
-import com.gruapim.infrastructure.controllers.annotations.QueryTasks;
-import com.gruapim.infrastructure.controllers.annotations.UpdateTask;
+import com.gruapim.infrastructure.controllers.annotations.CategoryParam;
+import com.gruapim.infrastructure.controllers.annotations.CreatedTaskDocs;
+import com.gruapim.infrastructure.controllers.annotations.DeletedTaskDocs;
+import com.gruapim.infrastructure.controllers.annotations.PaginatedTasksDocs;
+import com.gruapim.infrastructure.controllers.annotations.PartiallyUpdatedTaskDocs;
+import com.gruapim.infrastructure.controllers.annotations.QueriedTaskDocs;
+import com.gruapim.infrastructure.controllers.annotations.UpdatedTaskDocs;
 import com.gruapim.infrastructure.mappers.TaskMapper;
 import com.gruapim.infrastructure.persistence.entities.TaskEntity;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -51,7 +51,7 @@ public class TaskController {
   }
 
   @DeleteMapping("/{id}")
-  @DeleteTask
+  @DeletedTaskDocs
   public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
     TaskEntity task = service.query(id);
 
@@ -61,9 +61,9 @@ public class TaskController {
   }
 
   @GetMapping
-  @QueryTasks
+  @PaginatedTasksDocs
   public ResponseEntity<Page<TaskResponse>> get(
-      @CategoryQuery @RequestParam(name = "categoria", required = false) Category category,
+      @CategoryParam @RequestParam(name = "categoria", required = false) Category category,
       @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
     Page<TaskEntity> entities;
 
@@ -79,7 +79,7 @@ public class TaskController {
   }
 
   @GetMapping("/{id}")
-  @QueryTaskDetails
+  @QueriedTaskDocs
   public ResponseEntity<TaskResponse> get(@PathVariable Long id) throws Exception {
     TaskEntity entity = service.query(id);
 
@@ -89,7 +89,7 @@ public class TaskController {
   }
 
   @PatchMapping("/{id}")
-  @PartiallyUpdateTask
+  @PartiallyUpdatedTaskDocs
   public ResponseEntity<TaskResponse> patch(
       @PathVariable Long id, @Valid @RequestBody TaskPatch request) throws Exception {
     TaskEntity entity = service.query(id);
@@ -100,7 +100,7 @@ public class TaskController {
   }
 
   @PostMapping
-  @CreateTask
+  @CreatedTaskDocs
   public ResponseEntity<TaskResponse> post(@Valid @RequestBody TaskRequest request)
       throws Exception {
     TaskEntity entity = mapper.map(request);
@@ -115,7 +115,7 @@ public class TaskController {
   }
 
   @PutMapping("/{id}")
-  @UpdateTask
+  @UpdatedTaskDocs
   public ResponseEntity<TaskResponse> put(
       @PathVariable Long id, @Valid @RequestBody TaskRequest request) throws Exception {
     TaskEntity entity = service.query(id);
