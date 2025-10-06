@@ -3,9 +3,7 @@ package com.gruapim.infrastructure.controllers;
 import com.gruapim.application.dto.request.TaskPatch;
 import com.gruapim.application.dto.request.TaskRequest;
 import com.gruapim.application.dto.response.TaskResponse;
-import com.gruapim.application.services.TaskPersistenceService;
-import com.gruapim.application.services.TaskQueryService;
-import com.gruapim.application.services.TaskUpdateService;
+import com.gruapim.application.services.TaskService;
 import com.gruapim.domain.Category;
 import com.gruapim.infrastructure.controllers.annotations.CategoryQuery;
 import com.gruapim.infrastructure.controllers.annotations.CreateTask;
@@ -44,29 +42,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class TaskController {
   private final TaskMapper mapper;
 
-  private final TaskPersistenceService persistenceService;
+  private final TaskService service;
 
-  private final TaskUpdateService updateService;
-
-  private final TaskQueryService queryService;
-
-  public TaskController(TaskMapper mapper, TaskPersistenceService persistenceService,
-      TaskUpdateService updateService, TaskQueryService queryService) {
+  public TaskController(TaskMapper mapper, TaskService service) {
     this.mapper = mapper;
 
-    this.persistenceService = persistenceService;
-
-    this.updateService = updateService;
-
-    this.queryService = queryService;
+    this.service = service;
   }
 
   @DeleteMapping("/{id}")
   @DeleteTask
   public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
-    TaskEntity task = queryService.query(id);
+    TaskEntity task = service.query(id);
 
-    persistenceService.delete(task.getId());
+    service.delete(task.getId());
 
     return ResponseEntity.noContent().build();
   }
@@ -79,9 +68,9 @@ public class TaskController {
     Page<TaskEntity> entities;
 
     if (null != category) {
-      entities = queryService.query(category, pageable);
+      entities = service.query(category, pageable);
     } else {
-      entities = queryService.query(pageable);
+      entities = service.query(pageable);
     }
 
     Page<TaskResponse> response = entities.map(mapper::map);
@@ -92,7 +81,7 @@ public class TaskController {
   @GetMapping("/{id}")
   @QueryTaskDetails
   public ResponseEntity<TaskResponse> get(@PathVariable Long id) throws Exception {
-    TaskEntity entity = queryService.query(id);
+    TaskEntity entity = service.query(id);
 
     TaskResponse response = mapper.map(entity);
 
@@ -103,9 +92,9 @@ public class TaskController {
   @PartiallyUpdateTask
   public ResponseEntity<TaskResponse> patch(
       @PathVariable Long id, @Valid @RequestBody TaskPatch request) throws Exception {
-    TaskEntity entity = queryService.query(id);
+    TaskEntity entity = service.query(id);
 
-    TaskResponse response = mapper.map(updateService.update(entity, request));
+    TaskResponse response = mapper.map(service.update(entity, request));
 
     return ResponseEntity.ok().body(response);
   }
@@ -116,7 +105,7 @@ public class TaskController {
       throws Exception {
     TaskEntity entity = mapper.map(request);
 
-    TaskResponse response = mapper.map(persistenceService.save(entity));
+    TaskResponse response = mapper.map(service.save(entity));
 
     String path = String.format("/tasks/%d", response.id());
 
@@ -129,9 +118,9 @@ public class TaskController {
   @UpdateTask
   public ResponseEntity<TaskResponse> put(
       @PathVariable Long id, @Valid @RequestBody TaskRequest request) throws Exception {
-    TaskEntity entity = queryService.query(id);
+    TaskEntity entity = service.query(id);
 
-    TaskResponse response = mapper.map(updateService.update(entity, request));
+    TaskResponse response = mapper.map(service.update(entity, request));
 
     return ResponseEntity.ok().body(response);
   }

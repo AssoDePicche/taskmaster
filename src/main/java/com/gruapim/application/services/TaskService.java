@@ -2,19 +2,45 @@ package com.gruapim.application.services;
 
 import com.gruapim.application.dto.request.TaskPatch;
 import com.gruapim.application.dto.request.TaskRequest;
+import com.gruapim.application.services.exceptions.TaskNotFoundException;
+import com.gruapim.domain.Category;
 import com.gruapim.infrastructure.persistence.entities.TaskEntity;
 import com.gruapim.infrastructure.persistence.repositories.TaskJpaRepository;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class TaskUpdateService {
+public class TaskService {
   private final TaskJpaRepository repository;
 
-  public TaskUpdateService(TaskJpaRepository repository) {
+  public TaskService(TaskJpaRepository repository) {
     this.repository = repository;
+  }
+
+  @Transactional
+  public void delete(Long id) {
+    repository.deleteById(id);
+  }
+
+  public TaskEntity query(Long id) throws TaskNotFoundException {
+    return repository.findById(id).orElseThrow(() -> new TaskNotFoundException());
+  }
+
+  public Page<TaskEntity> query(Pageable pageable) {
+    return repository.findAll(pageable);
+  }
+
+  public Page<TaskEntity> query(Category category, Pageable pageable) {
+    return repository.findAllByCategory_Value(category.toString(), pageable);
+  }
+
+  @Transactional
+  public TaskEntity save(TaskEntity task) {
+    return repository.save(task);
   }
 
   @Transactional
